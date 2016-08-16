@@ -1,0 +1,43 @@
+
+<h1>All Support Requests</h1>
+<%= form_tag search_request_path(:search) do %>
+ <%= text_area_tag :search_item %>
+ <%= submit_tag "Search" %>
+<% end %>
+
+
+<% if @requests != nil %>
+
+<table class="table table-striped">
+  <thead>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Department</th>
+    <th>Message</th>
+  </thead>
+  <tbody>
+
+  <% @requests.each do |x| %>
+    <tr>
+      <td><%= x.name %></td>
+      <td><%= x.email %></td>
+      <td><%= x.department %></td>
+      <td><%= x.message %></td>
+      <td>
+        <%= link_to "View", request_path(x) %>
+        <%= link_to "Edit", edit_request_path(x) %>
+        <%= link_to "Delete", request_path(x), method: :delete, data: {confirm: "Are you sure you want to delete this support request?"} %>
+        <% if x.status == false %>
+        <%= link_to "Not Done", update_request_path(x), class: "btn not-done"%>
+        <% else %>
+        <%= link_to "Done", update_request_path(x), class: "btn done"%>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+<% else %>
+<% end %>
+
+<%= paginate @requests %>
